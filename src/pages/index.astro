@@ -1,12 +1,14 @@
 ---
-// Use Vite's native glob loader with eager loading enabled
 const replayModules = import.meta.glob('../replays/*.html', { eager: true });
 
-const replayList = Object.keys(replayModules).map((filePath) => {
+let replayList = Object.keys(replayModules).map((filePath) => {
   const filename = filePath.split('/').pop() || '';
   const slug = filename.replace('.html', '');
   return { slug, name: slug.replace(/-/g, ' ') };
 });
+
+// Newest first
+replayList = replayList.sort((a, b) => b.slug.localeCompare(a.slug));
 ---
 
 <html lang="en">
