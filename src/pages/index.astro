@@ -22,18 +22,20 @@ const replayList = Object.keys(replayModules).map((filePath) => {
     </style>
   </head>
   <body>
-    <h1>CS2 2D Replays Dashboard</h1>
-    <hr />
-    {replayList.length === 0 ? (
-      <p>No replays found. Drop your .html files into <code>src/replays/</code>.</p>
-    ) : (
-      <ul>
-        {replayList.map((replay) => (
-          <li>
-            <a href={`/replays/${replay.slug}`}>🎮 {replay.name}</a>
-          </li>
-        ))}
-      </ul>
-    )}
+	<h1>CS2 2D Replays Dashboard</h1>
+	<hr />
+	{replayList.length === 0 ? (
+	<p>No replays found. Drop your .html files into <code>src/replays/</code>.</p>
+	) : (
+	<ul>
+		{replayList.map((replay) => (
+		<li>
+		<a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/replays/${replay.slug}`}>
+			🎮 {replay.name}
+		</a>
+		</li>
+		))}
+	</ul>
+	)}
   </body>
 </html>
