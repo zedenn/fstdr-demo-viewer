@@ -41,6 +41,7 @@ replayList = replayList.sort((a, b) => b.slug.localeCompare(a.slug));
   async function checkPassword() {
     const stored = localStorage.getItem("replay-pass");
 
+    // Already authenticated
     if (stored === HASH) {
       document.body.style.display = "block";
       return;
@@ -48,16 +49,19 @@ replayList = replayList.sort((a, b) => b.slug.localeCompare(a.slug));
 
     const entered = prompt("Enter password");
     if (!entered) {
+      document.body.style.display = "block";   // <-- show body
       document.body.innerHTML = "<h1>Access denied</h1>";
       return;
     }
 
     const computed = await sha256(SALT + entered);
     if (computed !== HASH) {
+      document.body.style.display = "block";   // <-- show body
       document.body.innerHTML = "<h1>Access denied</h1>";
       return;
     }
 
+    // Success
     localStorage.setItem("replay-pass", HASH);
     document.body.style.display = "block";
   }
