@@ -32,7 +32,7 @@ const { rawContent } = Astro.props;
   </head>
   <body>
     <nav>
-      <a href="/">← Back to Dashboard</a> | <strong>Viewing: {slug}</strong>
+      <a href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/`}>← Back to Dashboard</a> | <strong>Viewing: {slug}</strong>
     </nav>
     
     <iframe srcdoc={rawContent}></iframe>
