@@ -1,0 +1,39 @@
+---
+// Use Vite's native glob loader with eager loading enabled
+const replayModules = import.meta.glob('../replays/*.html', { eager: true });
+
+const replayList = Object.keys(replayModules).map((filePath) => {
+  const filename = filePath.split('/').pop() || '';
+  const slug = filename.replace('.html', '');
+  return { slug, name: slug.replace(/-/g, ' ') };
+});
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CS2 2D Replays Dashboard</title>
+    <style>
+      body { font-family: sans-serif; background: #121214; color: #fff; padding: 2rem; }
+      ul { list-style: none; padding: 0; }
+      li { margin: 0.5rem 0; }
+      a { color: #6366f1; text-decoration: none; font-size: 1.2rem; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>CS2 2D Replays Dashboard</h1>
+    <hr />
+    {replayList.length === 0 ? (
+      <p>No replays found. Drop your .html files into <code>src/replays/</code>.</p>
+    ) : (
+      <ul>
+        {replayList.map((replay) => (
+          <li>
+            <a href={`/replays/${replay.slug}`}>🎮 {replay.name}</a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </body>
+</html>

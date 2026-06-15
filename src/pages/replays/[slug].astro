@@ -1,0 +1,40 @@
+---
+export async function getStaticPaths() {
+  // Use Vite's glob to fetch the raw text content of the HTML files
+  const fileModules = import.meta.glob('../../replays/*.html', { query: '?raw', eager: true });
+  
+  return Object.entries(fileModules).map(([filePath, module]) => {
+    const filename = filePath.split('/').pop() || '';
+    const slug = filename.replace('.html', '');
+    return {
+      params: { slug },
+      // @ts-ignore
+      props: { rawContent: module.default }, 
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { rawContent } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Replay: {slug}</title>
+    <style>
+      body { margin: 0; background: #000; font-family: sans-serif; color: #fff; }
+      nav { padding: 1rem; background: #121214; border-bottom: 1px solid #27272a; }
+      a { color: #3b82f6; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      iframe { width: 100%; height: calc(100vh - 60px); border: none; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/">← Back to Dashboard</a> | <strong>Viewing: {slug}</strong>
+    </nav>
+    
+    <iframe srcdoc={rawContent}></iframe>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+# Astro build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Windows PowerShell execution cache
+*.ps1.tmp
+
+# Editor junk
+.vscode/
+.idea/
+
+# Local replay pipeline artifacts (optional)
+*.dem
+*.tmp
