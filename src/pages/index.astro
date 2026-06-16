@@ -16,7 +16,7 @@ replayList = replayList.sort((a, b) => b.slug.localeCompare(a.slug));
     <meta charset="utf-8" />
     <title>CS2 2D Replays Dashboard</title>
     <style>
-      body { font-family: sans-serif; background: #121214; color: #fff; padding: 2rem; }
+      body { font-family: sans-serif; background: #121214; color: #fff; padding: 2rem; display:none;}
       ul { list-style: none; padding: 0; }
       li { margin: 0.5rem 0; }
       a { color: #6366f1; text-decoration: none; font-size: 1.2rem; }
@@ -24,6 +24,50 @@ replayList = replayList.sort((a, b) => b.slug.localeCompare(a.slug));
     </style>
   </head>
   <body>
+<script>
+  const SALT = "saltymaster155";
+  const HASH = "63169e47f4a8089fcf23fe34a81efd7e1e72f7cf074c8094e14744b3eb89e6e6"; // your salted hash
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(str)
+    );
+    return [...new Uint8Array(buf)]
+      .map(x => x.toString(16).padStart(2, "0"))
+      .join("");
+  }
+
+  async function checkPassword() {
+    const stored = localStorage.getItem("replay-pass");
+
+    // Already authenticated
+    if (stored === HASH) {
+      document.body.style.display = "block";
+      return;
+    }
+
+    const entered = prompt("Enter password");
+    if (!entered) {
+      document.body.style.display = "block";   // <-- show body
+      document.body.innerHTML = "<h1>Access denied</h1>";
+      return;
+    }
+
+    const computed = await sha256(SALT + entered);
+    if (computed !== HASH) {
+      document.body.style.display = "block";   // <-- show body
+      document.body.innerHTML = "<h1>Access denied</h1>";
+      return;
+    }
+
+    // Success
+    localStorage.setItem("replay-pass", HASH);
+    document.body.style.display = "block";
+  }
+
+  checkPassword();
+</script>
 	<h1>CS2 2D Replays Dashboard</h1>
 	<hr />
 	{replayList.length === 0 ? (
